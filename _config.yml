@@ -19,7 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: William Pursell
-email: your-email@example.com
+email: william.r.pursell@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Mostly playing around with Jekyll and github pages.  Maybe this will
   someday be a useful blog.
