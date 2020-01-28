@@ -88,7 +88,7 @@ permalink: /resume/
 * Course work in algebraic topology, real and complex analysis, Conley
   Index theory, computational complexity, perturbation methods, numerical
   analysis, differential geometry, partial differential equations,
-  dynamical systems, applied mathematics, image processing, etc.
+  dynamical systems, applied mathematics, image processing, alpine skiing, etc.
 * Taught undergraduate courses in linear algebra, calculus, multi-dimensional
   calculus (aka "vector calculus"), differential equations (ODEs),
   trigonometry, and introductory math.
