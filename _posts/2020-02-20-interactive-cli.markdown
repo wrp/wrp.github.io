@@ -45,8 +45,8 @@ were to invoke something like:
 
 {% highlight sh %}
 $ while read host; do
-	ssh "$host" git push origin 2>&1 > /dev/null | sed "s/^/$host: /"
-done < long_list_of_hostnames
+	ssh "$host" git push origin 2>&1 >&3 </dev/null | sed "s/^/$host: /"
+done < long_list_of_hostnames >&2 3>&1
 {% endhighlight %}
 
 the spam error messages are multiplied by a large factor with
@@ -59,7 +59,7 @@ settings than the simple interactive use case.
 
 Maybe this is just me ranting "get off my lawn", but I believe
 this is a significant problem.  Similar to printing a usage
-statement in response to an error!  Don't do it.  If a user
+statement in response to an error.  Don't do it!  If a user
 is using the tool interactively and wants an error message,
 they should ask for it with a flag (eg, -h, or --help).
 If you spam 75 lines of usage in response to an error,
@@ -96,11 +96,11 @@ after invoking git-status, the terminal will display:
 $
 {% endhighlight %}
 
-What does '--porcelain' and '--untracked-files' have to do with
+What does `--porcelain` and `--untracked-files` have to do with
 this error?  Absolutely nothing, so why am I being told about them?
 Clearly some error occurred, but it would be much easier if the
-error message stating that --cruft is an unrecognized option were
-still visible.  Knowing that there's probaly some useful information
+error message stating that `--cruft` is an unrecognized option were
+still visible.  Suspecting that there's probaly some useful information
 at the top of the output, the user might reasonably run:
 
 {% highlight sh %}
