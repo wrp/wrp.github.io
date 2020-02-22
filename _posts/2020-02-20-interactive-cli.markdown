@@ -44,9 +44,9 @@ that the tool will be used that way.  If the user instead
 were to invoke something like:
 
 {% highlight sh %}
-$ while read host; do
-	ssh "$host" git push origin 2>&1 >&3 </dev/null | sed "s/^/$host: /"
-done < long_list_of_hostnames >&2 3>&1
+$ for host in $long_list_of_hostnames; do
+	ssh "$host" git push origin 2>&1 >&3 | sed "s/^/$host: /"
+done >&2 3>&1
 {% endhighlight %}
 
 the spam error messages are multiplied by a large factor with
