@@ -64,7 +64,7 @@ the error messages are multiplied by a large factor with
 no benefit.  Basically, in anything but the simple interactive
 use case, the excessive verbosity is just an annoyance.   In
 the simple interactive use, the excessive verbosity is only (marginally) useful
-the first time it is seen.  Subsequent occurrences are just an annoyance.
+the first time it is seen, and subsequent occurrences are line noise.
 Tool writers should be striving to make their tools useful in more
 settings than the simple interactive use case.
 
@@ -72,7 +72,7 @@ This is similar in spirit to the misuse of stack traces.  Software
 should not use a stack trace as a replacement for a well written
 error message.  A stack trace is an indication of a programming
 error, and a developer ought to be embarrassed if their code ever
-throws one in production. Operational error are not programming errors,
+throws one in production. Operational errors are not programming errors,
 and an operational error deserves a well-written, succinct error
 message.  Consider, as a concrete example, this error generated
 by kafka-connect:
