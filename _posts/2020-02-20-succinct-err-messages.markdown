@@ -43,7 +43,7 @@ The excess verbosity makes it difficult to see what the actual
 problem is.  It is sufficient if the error message were restricted
 to the line: "ERROR: (gcloud.compute) Invalid choice: 'instance'."
 Printing an additional 14 lines of text imposes an unnecessary
-cognitive burden on the user and obscures the actaul problem.  In cases
+cognitive burden on the user and obscures the actual problem.  In cases
 where the tool is embedded in a pipeline in which perhaps multiple
 commands are invoked incorrectly, that noise quickly becomes
 substantial.  In short, it decreases the signal to noise ratio.
@@ -85,7 +85,7 @@ I would argue, that if it took more than 25ms, then it took too long.  If a succ
 error message were given, (eg, just that one line), the operator could
 immediately see what the problem is.  If those error messages are buried
 in 10s of MiB of log files, the additional time it takes to find the problem
-in the noise is not small.  Note that there are also several occurrences
+in the noise is not small.  Note that there is an occurrence
 of the string "PERMISSION_DENIED" in the above garbage dump.  I leave
 it as an exercise to the reader to determine if there is any authentication
 error here.
