@@ -98,7 +98,7 @@ is using the tool interactively and wants an error message,
 they should ask for it with a flag (eg, -h, or --help).
 If you spam 75 lines of usage in response to an error,
 it is not useful even in the simple use case and a major
-headache when the tool is being used non-interactively.
+headache when the tool is being used in a pipeline.
 Consider:
 
 {% highlight sh %}
