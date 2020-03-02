@@ -39,6 +39,16 @@ and the repository exists.
 {% endhighlight %}
 
 What could possibly be wrong with such verbosity?  Everything.
+The excess verbosity makes it difficult to see what the actual
+problem is.  It is sufficient if the error message were restricted
+to the line: "ERROR: (gcloud.compute) Invalid choice: 'instance'."
+Printing an additional 14 lines of text imposes an unnecessary
+cognitive burden on the user and obscures the actaul problem.  In cases
+where the tool is embedded in a pipeline in which perhaps multiple
+commands are invoked incorrectly, that noise quickly becomes
+substantial.  In short, it decreases the signal to noise ratio.
+It is spam.
+
 This sort of thing is only (marginally) helpful when the tool is
 being used interactively, and tool writers need to stop assuming
 that the tool will be used that way.  If the user instead
@@ -50,13 +60,36 @@ $ for host in $long_list_of_hostnames; do
 done >&2 3>&1
 {% endhighlight %}
 
-the spam error messages are multiplied by a large factor with
+the error messages are multiplied by a large factor with
 no benefit.  Basically, in anything but the simple interactive
 use case, the excessive verbosity is just an annoyance.   In
 the simple interactive use, the excessive verbosity is only (marginally) useful
 the first time it is seen.  Subsequent occurrences are just an annoyance.
 Tool writers should be striving to make their tools useful in more
 settings than the simple interactive use case.
+
+This is similar in spirit to the misuse of stack traces.  Software
+should not use a stack trace as a replacement for a well written
+error message.  A stack trace is an indication of a programming
+error, and a developer ought to be embarrassed if their code ever
+throws one in production. Operational error are not programming errors,
+and an operational error deserves a well-written, succinct error
+message.  Consider, as a concrete example, this error generated
+by kafka-connect:
+
+`"trace": "org.apache.kafka.connect.errors.ConnectException: Exiting WorkerSinkTask due to unrecoverable exception.\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.deliverMessages(WorkerSinkTask.java:560)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.poll(WorkerSinkTask.java:321)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.iteration(WorkerSinkTask.java:224)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.execute(WorkerSinkTask.java:192)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: com.google.cloud.bigquery.BigQueryException: Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.translate(HttpBigQueryRpc.java:103)\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.getTable(HttpBigQueryRpc.java:250)\n\tat com.google.cloud.bigquery.BigQueryImpl$14.call(BigQueryImpl.java:558)\n\tat com.google.cloud.bigquery.BigQueryImpl$14.call(BigQueryImpl.java:555)\n\tat com.google.api.gax.retrying.DirectRetryingExecutor.submit(DirectRetryingExecutor.java:105)\n\tat com.google.cloud.RetryHelper.run(RetryHelper.java:76)\n\tat com.google.cloud.RetryHelper.runWithRetries(RetryHelper.java:50)\n\tat com.google.cloud.bigquery.BigQueryImpl.getTable(BigQueryImpl.java:554)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.maybeCreateTable(BigQuerySinkTask.java:169)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.getRecordTable(BigQuerySinkTask.java:144)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.put(BigQuerySinkTask.java:207)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.deliverMessages(WorkerSinkTask.java:538)\n\t... 10 more\nCaused by: com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden\n{\n  \"code\" : 403,\n  \"errors\" : [ {\n    \"domain\" : \"usageLimits\",\n    \"message\" : \"Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\",\n    \"reason\" : \"rateLimitExceeded\"\n  } ],\n  \"message\" : \"Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\",\n  \"status\" : \"PERMISSION_DENIED\"\n}\n\tat com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:150)\n\tat com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:113)\n\tat com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:40)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest$1.interceptResponse(AbstractGoogleClientRequest.java:451)\n\tat com.google.api.client.http.HttpRequest.execute(HttpRequest.java:1089)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:549)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:482)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:599)\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.getTable(HttpBigQueryRpc.java:248)\n\t... 20 more\n",`
+
+How long did it take you to see that the core of the problem is:
+`BigQueryException: Exceeded rate limits: too many api requests per user per method for this user_method`
+I would argue, that if it took more than 25ms, then it took too long.  If a succinct
+error message were given, (eg, just that one line), the operator could
+immediately see what the problem is.  If those error messages are buried
+in 10s of MiB of log files, the additional time it takes to find the problem
+in the noise is not small.  Note that there are also several occurrences
+of the string "PERMISSION_DENIED" in the above garbage dump.  I leave
+it as an exercise to the reader to determine if there is any authentication
+error here.
+
 
 Maybe this is just me ranting "get off my lawn", but I believe
 this is a significant problem.  Similar to printing a usage
