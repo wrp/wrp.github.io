@@ -43,11 +43,16 @@ The excess verbosity makes it difficult to see what the actual
 problem is.  It is sufficient if the error message were restricted
 to the line: "ERROR: (gcloud.compute) Invalid choice: 'instance'."
 Printing an additional 14 lines of text imposes an unnecessary
-cognitive burden on the user and obscures the actual problem.  In cases
-where the tool is embedded in a pipeline in which perhaps multiple
+cognitive burden [^1] on the user and obscures the actual problem. In
+cases where the tool is embedded in a pipeline in which perhaps multiple
 commands are invoked incorrectly, that noise quickly becomes
 substantial.  In short, it decreases the signal to noise ratio.
 It is spam.
+
+[^1]: You may chuckle at the thought that having to ignore 14 lines
+    of text constitutes "cognitive burden".  If you do, I assume
+    you've never been in a high-pressure outage in the middle of the
+    night with too little sleep and too much coffee.
 
 This sort of thing is only (marginally) helpful when the tool is
 being used interactively, and tool writers need to stop assuming
