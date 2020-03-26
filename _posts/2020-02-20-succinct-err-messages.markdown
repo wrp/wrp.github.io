@@ -70,7 +70,7 @@ no benefit.  Basically, in anything but the simple interactive
 use case, the excessive verbosity is just an annoyance.   In
 the simple interactive use, the excessive verbosity is only (marginally) useful
 the first time it is seen, and subsequent occurrences are line noise.
-Tool writers should be striving to make their tools useful in more
+Tool writers should strive to make their tools useful in more
 settings than the simple interactive use case.
 
 This is similar in spirit to the misuse of stack traces.  Software
