@@ -27,26 +27,15 @@ To search the help text of gcloud commands, run:
   gcloud help -- SEARCH_TERMS
 {% endhighlight %}
 
-Why is this annoying?  Surely it is useul to allow the tool to provide helpful
-hints about the source of the error?  Similarly:
-
-{% highlight sh %}
-$ git push origin
-fatal: 'origin' does not appear to be a git repository
-fatal: Could not read from remote repository.
-
-Please make sure you have the correct access rights
-and the repository exists.
-{% endhighlight %}
-
-What could possibly be wrong with such verbosity?  Everything.
-The excess verbosity makes it difficult to see what the actual
+Why is this annoying?  Surely it is useful to have the tool provide helpful
+hints about the source of the error?  However,
+the excess verbosity makes it difficult to see what the actual
 problem is.  It is sufficient if the error message were restricted
 to the line: "ERROR: (gcloud.compute) Invalid choice: 'instance'."
 Printing an additional 14 lines of text imposes an unnecessary
 cognitive burden [^1] on the user and obscures the actual problem. In
-cases where the tool is embedded in a pipeline in which perhaps multiple
-commands are invoked incorrectly, that noise quickly becomes
+cases where the tool is embedded in a pipeline in which multiple
+commands are invoked, that noise quickly becomes
 substantial.  In short, it decreases the signal to noise ratio.
 It is spam.
 
@@ -57,8 +46,18 @@ It is spam.
 
 This sort of thing is only (marginally) helpful when the tool is
 being used interactively, and tool writers need to stop assuming
-that the tool will be used that way.  If the user instead
-were to invoke something like:
+that the tool will be used that way.  Consider:
+
+{% highlight sh %}
+$ git push origin
+fatal: 'origin' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+{% endhighlight %}
+
+If the user instead were to invoke something like:
 
 {% highlight sh %}
 $ for host in $long_list_of_hostnames; do
@@ -166,7 +165,7 @@ $ git status --column 2>&1 | head
 {% endhighlight %}
 
 and sees no error!  Then another re-run from the shell history, again
-having the edit the command to redirect the error stream, and the error message
+having to edit the command to redirect the error stream, and the error message
 if finally visible.
 
 In this case, the tool writer made a half-baked attempt to fix this
