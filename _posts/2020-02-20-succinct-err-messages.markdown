@@ -102,7 +102,7 @@ error here.
 Maybe this is just me ranting "get off my lawn", but I believe
 this is a significant problem.  Similar to printing a usage
 statement in response to an error.  Don't do it!  If a user
-is using the tool interactively and wants an error message,
+wants an error message,
 they should ask for it with a flag (eg, -h, or --help).
 If you spam 75 lines of usage in response to an error,
 it is not useful even in the simple use case and a major
