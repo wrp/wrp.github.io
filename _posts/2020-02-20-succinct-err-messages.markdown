@@ -112,7 +112,7 @@ Consider:
 {% highlight sh %}
 $ echo $LINES
 18
-$ git status --cruft banana | ...
+$ git status --colunm | ...
 {% endhighlight %}
 
 after invoking git-status, the terminal will display:
@@ -141,20 +141,26 @@ $
 What does `--porcelain` and `--untracked-files` have to do with
 this error?  Absolutely nothing, so why am I being told about them?
 Clearly some error occurred, but it would be much easier if the
-error message stating that `--cruft` is an unrecognized option were
+error message stating that `--colunm` is an unrecognized option were
 still visible.  Suspecting that there's probaly some useful information
-at the top of the output, the user might reasonably run:
+at the top of the output, the user might reasonably use their shell history
+to rerun the command with a slight modification:
 
 {% highlight sh %}
-$ git status --cruft banana | head
+$ git status --colunm | head
 {% endhighlight %}
 
 but that's no good because the usage statement was treated as an error message
-and written to stderr!  So now the user has to do:
+and written to stderr!  Now, in frustration, the user retypes the command instead
+of re-using it from the shell history and invokes
 
 {% highlight sh %}
-$ git status --cruft banana 2>&1 | head
+$ git status --column 2>&1 | head
 {% endhighlight %}
+
+and sees no error!  Then another re-run from the shell history, again
+having the edit the command to redirect the error stream, and the error message
+if finally visible.
 
 In this case, the tool writer made a half-baked attempt to fix this
 problem, and when the tool is invoked in the simplest case the error
