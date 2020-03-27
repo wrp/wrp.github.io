@@ -66,7 +66,7 @@ $ for host in $long_list_of_hostnames; do
 done >&2 3>&1
 {% endhighlight %}
 
-the error messages are multiplied by a large factor with
+the "useful hints" are repeated multiple times with
 no benefit.  Basically, in anything but the simple interactive
 use case, the excessive verbosity is just an annoyance.   In
 the simple interactive use, the excessive verbosity is only (marginally) useful
