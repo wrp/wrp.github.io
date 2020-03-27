@@ -93,7 +93,7 @@ I would argue, that if it took more than 25ms, then it took too long.  If a succ
 error message were given, (eg, just that one line), the operator could
 immediately see what the problem is.  If those error messages are buried
 in 10s of MiB of log files, the additional time it takes to find the problem
-in the noise is not small.  Note that there is an occurrence
+in the noise is nontrivial.  Note that there is an occurrence
 of the string "PERMISSION_DENIED" in the above garbage dump.  I leave
 it as an exercise to the reader to determine if there is any authentication
 error here.
