@@ -66,7 +66,7 @@ done >&2 3>&1
 {% endhighlight %}
 
 or (perhaps more realistically) running something similar in
-an ansible playbook to update multiple hosts, the "useful hints"
+an ansible playbook [^3], the "useful hints"
 are repeated multiple times with
 no benefit.  Basically, in anything but the simple interactive
 use case, the excessive verbosity is just an annoyance.   In
@@ -74,6 +74,9 @@ the simple interactive use, the excessive verbosity is only (marginally) useful
 the first time it is seen, and subsequent occurrences are line noise.
 Tool writers should strive to make their tools useful in more
 settings than the simple interactive use case.
+
+[^3]: Do not ever do this.  Git is not a deployment tool, and using
+    git from ansible is an absolute travesty.
 
 This is similar in spirit to the misuse of stack traces.  Software
 should not use a stack trace as a replacement for a well written
