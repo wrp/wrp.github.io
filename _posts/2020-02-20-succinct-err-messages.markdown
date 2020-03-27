@@ -3,6 +3,7 @@ layout: post
 title:  "Error messages should be succinct"
 date:   2020-02-20 20:56:59 -0800
 github_comments_issueid: "1"
+excerpt_separator: \{% endhighlight %\}
 categories: blog
 ---
 
