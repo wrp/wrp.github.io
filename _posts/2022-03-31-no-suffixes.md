@@ -2,7 +2,7 @@
 layout: post
 title:  "Do not use file name suffixes on executables"
 date:   2022-03-31 10:45:00 -0500
-github_comments_issueid: "2"
+github_comments_issueid: "3"
 categories: blog
 ---
 
