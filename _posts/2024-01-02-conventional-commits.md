@@ -24,19 +24,19 @@ $ f=file1; echo text > $f; git add $f; git commit -m "Add $f" -s --trailer subpr
 $ f=file2; echo text > $f; git add $f; git commit -m "Add $f" -s --trailer subproject=storage --trailer ticket=STORE-1234 --trailer type=docs > /dev/null
 $ f=file3; echo text > $f; git add $f; git commit -m "Add $f" -s --trailer subproject=comp --trailer ticket=COMP-134 --trailer type=feat > /dev/null
 $ git l1
- f24ad31 bob           Add file3                                            HEAD -> main
+ f24ad31 bob           Add file3
  d3ff3e1 bob           Add file2
  fd6c37b bob           Add file1
 $ t=ticket git l1
- f24ad31 bob           [COMP-134   ] Add file3                                            HEAD -> main
+ f24ad31 bob           [COMP-134   ] Add file3
  d3ff3e1 bob           [STORE-1234 ] Add file2
  fd6c37b bob           [MEM-4      ] Add file1
 $ t=type git l1
- f24ad31 bob           [feat       ] Add file3                                            HEAD -> main
+ f24ad31 bob           [feat       ] Add file3
  d3ff3e1 bob           [docs       ] Add file2
  fd6c37b bob           [chore      ] Add file1
 $ w=10 t=ticket,subproject git l1
- f24ad31 bob           [COMP-134  ][comp      ] Add file3                                            HEAD -> main
+ f24ad31 bob           [COMP-134  ][comp      ] Add file3
  d3ff3e1 bob           [STORE-1234][storage   ] Add file2
  fd6c37b bob           [MEM-4     ][mem       ] Add file1
 ~~~~
@@ -51,7 +51,7 @@ conventional commits, you just need to tweak the format:
 
 ~~~~
 $ t=type git l1
- f24ad31 bob           feat: Add file3                                            HEAD -> main
+ f24ad31 bob           feat: Add file3
  d3ff3e1 bob           docs: Add file2
  fd6c37b bob           chore: Add file1
 ~~~~
