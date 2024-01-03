@@ -61,17 +61,17 @@ $ t=type git l1
 
 
 [^aliases]: To generate these outputs, the following alias was used in a global .gitconfig:
-~~~~
-        l1 = !bash -c 'cd ${GIT_PREFIX:-.} && a=$(printf \"%s\" ${t-$(git config \
-                core.default-trailers)} | \
-                sed -E \"s/([^,]*)(\\$|,)/[%<(${w:-11})%(trailers:key=\\1,separator=%x2C,valueonly)]/g\" \
-                ) && \
-                git log \
-                --format=tformat:\"$(echo \"\
-                %Cgreen%h%Cblue\
-                %Cred%<($(($(tput cols)/10 - 2)),trunc)%an%Creset\
-                ${a}\
-                %<($(($(tput cols) / 3)),trunc)%s \
-                %Creset\
-                \" | tr -s \" \"  )\" \"$@\"' _
-~~~~
+    ~~~~
+    l1 = !bash -c 'cd ${GIT_PREFIX:-.} && a=$(printf \"%s\" ${t-$(git config \
+            core.default-trailers)} | \
+            sed -E \"s/([^,]*)(\\$|,)/[%<(${w:-11})%(trailers:key=\\1,separator=%x2C,valueonly)]/g\" \
+            ) && \
+            git log \
+            --format=tformat:\"$(echo \"\
+            %Cgreen%h%Cblue\
+            %Cred%<($(($(tput cols)/10 - 2)),trunc)%an%Creset\
+            ${a}\
+            %<($(($(tput cols) / 3)),trunc)%s \
+            %Creset\
+            \" | tr -s \" \"  )\" \"$@\"' _
+    ~~~~
