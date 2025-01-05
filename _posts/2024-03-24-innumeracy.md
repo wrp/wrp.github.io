@@ -14,7 +14,7 @@ return!".
 No.  How is it that someone writing an article on the stock market
 does not even grasp the basic concept of compound interest?  Although
 10.25 * 4 is indeed 41, that is not the relevant calculation.
-The relevant calculation is (1.1025)^4 =~ 1.478, and a 10.25% return
-every quarter is a 47.8% annual return.  I have to assume that people are
+The relevant calculation is (1.1025)^4 =~ 1.4775, and a 10.25% return
+every quarter is a 47.75% annual return.  I have to assume that people are
 not completely ignorant, so perhaps the author is "dumbing down" the
 article for the audience.
