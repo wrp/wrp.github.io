@@ -38,7 +38,9 @@ annotations.  This wouldn't be a big deal except in the aforementioned
 case when you are staring at a function definition on line 5345 of
 a file and the `class Foo` line occurs on line 3400, and you simply
 don't have context to even be certain which class definition you
-are currently looking at.
+are currently looking at.  (Note that "from __future__ import annotations"
+allows the annotation of the class in embedded method definitions,
+so this really is no longer a valid point).
 
 This reduces indentation level by 1.  Whether or not this is
 significant is debatable, but each level of indentation roughly
