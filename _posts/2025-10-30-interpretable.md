@@ -23,11 +23,15 @@ Examples of what affects readability:
 	Minimal cognitive overhead to follow control flow
 	Avoiding unnecessary cleverness or obfuscation
 
-Readable code lets someone scan a function and follow the flow without getting lost in syntax or naming confusion.
+Readable code lets someone scan a function and follow the flow
+without getting lost in syntax or naming confusion.
 
 ---
-Interpretable code is easy to understand conceptually — that is, someone can determine why it behaves the way it does, and what it means in the larger context.
-It emphasizes semantic clarity and intent.
+
+Interpretable code is easy to understand conceptually — that is,
+someone can determine why it behaves the way it does, and what it
+means in the larger context.  It emphasizes semantic clarity and
+intent.
 
 Interpretability = semantic and conceptual clarity.
 
@@ -37,7 +41,8 @@ Examples of what affects interpretability:
 	Comments that explain why something is done, not what
 	Code that aligns with expected mental models or business logic
 
-Interpretable code lets someone understand the reasoning behind it — not just follow its syntax.
+Interpretable code lets someone understand the reasoning behind it
+— not just follow its syntax.
 ~~~
 
 I fundamentally disagree.  This definition of "interpretable" is
@@ -59,23 +64,29 @@ did not define "readability" in terms of specific coding conventions
 (like indentation or naming styles), but rather as the overall
 quality of a program that is structured and written primarily for
 human understanding.  Key aspects of Knuth's view on readability:
-Human-Centered: He famously stated, "Programs are meant to be read
+
+**Human-Centered**: He famously stated, "Programs are meant to be read
 by humans and only incidentally for computers to execute". The main
 goal of a programmer should be clear communication to other people
-(and their future selves).  Narrative Flow: A readable program, in
-Knuth's view, should be presented as an essay or a literary work,
-with a logical and clear narrative flow that explains the thought
-process and reasoning behind the code, rather than just the mechanics.
-Integrated Documentation: Readability is achieved by naturally
+(and their future selves).
+
+**Narrative Flow**: A readable program, in Knuth's view, should be
+presented as an essay or a literary work, with a logical and clear
+narrative flow that explains the thought process and reasoning
+behind the code, rather than just the mechanics.
+
+**Integrated Documentation**: Readability is achieved by naturally
 integrating extensive documentation (written in natural language)
 with code snippets. This contrasts with traditional coding where
 comments are often terse additions to a compiler-mandated structure.
-Comprehensible Order: The program's components should be introduced
+
+**Comprehensible Order**: The program's components should be introduced
 in an order that is best for human comprehension, not the linear
 order required by the compiler. Tools (like his WEB system, which
 used "tangle" to produce compilable code and "weave" to produce
 documentation) manage the process of generating both the executable
 program and the readable documentation from the same source file.
+
 In essence, Knuth viewed a readable program as one that is an
 excellent exposition of its own logic and design, written in a style
 that emphasizes clarity, exposition, and excellence of style for
