@@ -65,22 +65,22 @@ did not define "readability" in terms of specific coding conventions
 quality of a program that is structured and written primarily for
 human understanding.  Key aspects of Knuth's view on readability:
 
-**Human-Centered**: He famously stated, "Programs are meant to be read
+Human-Centered: He famously stated, "Programs are meant to be read
 by humans and only incidentally for computers to execute". The main
 goal of a programmer should be clear communication to other people
 (and their future selves).
 
-**Narrative Flow**: A readable program, in Knuth's view, should be
+Narrative Flow: A readable program, in Knuth's view, should be
 presented as an essay or a literary work, with a logical and clear
 narrative flow that explains the thought process and reasoning
 behind the code, rather than just the mechanics.
 
-**Integrated Documentation**: Readability is achieved by naturally
+Integrated Documentation: Readability is achieved by naturally
 integrating extensive documentation (written in natural language)
 with code snippets. This contrasts with traditional coding where
 comments are often terse additions to a compiler-mandated structure.
 
-**Comprehensible Order**: The program's components should be introduced
+Comprehensible Order: The program's components should be introduced
 in an order that is best for human comprehension, not the linear
 order required by the compiler. Tools (like his WEB system, which
 used "tangle" to produce compilable code and "weave" to produce
