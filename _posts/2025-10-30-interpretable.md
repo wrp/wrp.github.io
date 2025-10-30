@@ -44,8 +44,8 @@ I fundamentally disagree.  This definition of "interpretable" is
 *exactly* what people have always meant by "readable".  Or, at
 least, it is what I have always meant!  Are other people using the
 word differently than I am?  Perhaps it is good to have this new
-word to use to mean exactly what the old word has alway meant, as
-it may provide additional clarity to new users, but redefining words
+word which means exactly the same thing as the old word if
+it provides clarity to new users, but redefining words
 is dangerous.  If we redefine "readable" to only refer to the lexical
 aspects of the code, we are essentially changing the meaning of
 every book, article, and document written over the last several
