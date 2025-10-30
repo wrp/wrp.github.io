@@ -81,3 +81,10 @@ excellent exposition of its own logic and design, written in a style
 that emphasizes clarity, exposition, and excellence of style for
 the human reader.
 ~~~
+
+If we reduce the definition of "readable" to only apply to syntactic
+and stylistic clarity, we dumb down every past article on the
+subject and hamstring a generation's efforts to encourage readable
+code.  The word "readable" means that a human can understand it easily,
+and has always meant "interpretable".  Introducing the new
+word hinders the discourse.
