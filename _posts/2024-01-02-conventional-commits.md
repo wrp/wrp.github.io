@@ -6,7 +6,7 @@ github_comments_issueid: "5"
 categories: blog
 ---
 
-[Conventional commits](https://jekyllrb.com/docs/home) are a popular approach
+[Conventional commits](https://www.conventionalcommits.org) are a popular approach
 for maintaining history, but I believe that approach is sub-optimal.
 There is a more flexible way to record the same information.  In particular,
 conventional commits recognizes the utility of using git trailers to convey
