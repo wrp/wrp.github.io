@@ -14,12 +14,15 @@ information, and I argue here that *all* of the information that conventional
 commits puts in subjects should instead be recorded in trailers, since it
 allows the reader greater flexibility in displaying the information.
 
-Consider[^aliases]:
+Consider:
 
 ~~~~
 $ rm -rf git-example; mkdir git-example; cd git-example; git init > /dev/null
 $ git config user.email 'bob@dev_null.com'; git config user.name bob
 $ git config commit.gpgSign false
+$ git config alias.l1 '!bash -c '\''trailers="${t:+[%<(${w:-11})'$(:
+	)'%(trailers:key=$t,separator=%x2C,valueonly)] }"'$(:
+	)' && git log --format=tformat:"%h% an ${trailers}%s" "$@"'\'' _'
 $ make_commit() { f=$1; echo text > $f;
 	git add $f;
 	git commit -m "Add $f" -s \
@@ -58,11 +61,3 @@ the formatting of the commit subjects.  Keeping the metadata in the trailers
 is much more robust.  Rather than trying to make
 the simple string of the commit subject into a mechanism for storing
 metadata, just use the trailers.
-
-
-
-[^aliases]: To generate these outputs, the following alias was used in a global .gitconfig:
-	~~~~
-	l1 = !bash -c 'trailers=\"${t:+[%<(${w:-11})%(trailers:key=$t,separator=%x2C,valueonly)] }\" \
-		&& git log --format=tformat:\"%h% an ${trailers}%s\" \"$@\"' _
-	~~~~
