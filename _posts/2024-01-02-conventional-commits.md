@@ -20,7 +20,13 @@ Consider[^aliases]:
 $ rm -rf git-example; mkdir git-example; cd git-example; git init > /dev/null
 $ git config user.email 'bob@dev_null.com'; git config user.name bob
 $ git config commit.gpgSign false
-$ make_commit() { f=$1; echo text > $f; git add $f; git commit -m "Add $f" -s --trailer subproject=$2 --trailer ticket=$3 --trailer type=$4 > /dev/null; }
+$ make_commit() { f=$1; echo text > $f;
+	git add $f;
+	git commit -m "Add $f" -s \
+		--trailer subproject=$2 \
+		--trailer ticket=$3 \
+		--trailer type=$4;
+	} > /dev/null
 $ make_commit file1 mem MEM-4 chore
 $ make_commit file2 storage STORE-1234 docs
 $ make_commit file3 comp COMP-134 feat
