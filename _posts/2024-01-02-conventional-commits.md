@@ -22,7 +22,7 @@ $ git config user.email 'bob@dev_null.com'; git config user.name bob
 $ git config commit.gpgSign false
 $ git config alias.l1 '!bash -c '\''trailers="${t:+[%<(${w:-11})'$(:
 	)'%(trailers:key=$t,separator=%x2C,valueonly)] }"'$(:
-	)' && git log --format=tformat:"%h% an ${trailers}%s" "$@"'\'' _'
+	)' && git log --format=tformat:"%an ${trailers}%s" "$@"'\'' _'
 $ make_commit() { f=$1; echo text > $f;
 	git add $f;
 	git commit -m "Add $f" -s \
@@ -34,21 +34,22 @@ $ make_commit file1 mem MEM-4 chore
 $ make_commit file2 storage STORE-1234 docs
 $ make_commit file3 comp COMP-134 feat
 $ git l1
-7dc09e8 bob Add file3
-cde0af3 bob Add file2
-c8b670b bob Add file1
+bob Add file3
+bob Add file2
+bob Add file1
 $ t=ticket git l1
-7dc09e8 bob [COMP-134   ] Add file3
-cde0af3 bob [STORE-1234 ] Add file2
-c8b670b bob [MEM-4      ] Add file1
-$ t=type git l1
-7dc09e8 bob [feat       ] Add file3
-cde0af3 bob [docs       ] Add file2
-c8b670b bob [chore      ] Add file1
-$ w=4 t=type git l1
-7dc09e8 bob [feat] Add file3
-cde0af3 bob [docs] Add file2
-c8b670b bob [chore] Add file1
+bob [COMP-134   ] Add file3
+bob [STORE-1234 ] Add file2
+bob [MEM-4      ] Add file1
+$ w=3 t=type git l1
+bob [feat] Add file3
+bob [docs] Add file2
+bob [chore] Add file1
+$ t=Signed-Off-By git l1
+bob [bob <bob@dev_null.com>] Add file3
+bob [bob <bob@dev_null.com>] Add file2
+bob [bob <bob@dev_null.com>] Add file1
+
 ~~~~
 
 In the above, we can see that specifying the trailer affords the ability
