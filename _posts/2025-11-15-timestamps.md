@@ -38,5 +38,4 @@ with at most 3 characters. "0442-6" is shorter than "4:42 AM".
 "0442+11" is exactly the same length.  The only reason to prefer
 the ambiguous, uniformative, and completely worthless timestamp
 format is that some people find it "prettier".  A little bit of
-prettiness is not worth the ambiguity and headaches caused by
-the ambiguity.
+prettiness is not worth the headaches caused by the ambiguity.
