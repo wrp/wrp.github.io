@@ -97,12 +97,13 @@ If the tool considers this an error condition (and `exit 1`
 says it does), then the usage message is an error message
 and belongs on stderr.  If the message is normal output
 that belongs on stdout, then no error occurred and the exit
-code should be 0.  These are the only two internally consistent
-positions:
+code should be 0.  There are a few options, none of which
+are any good:
 
 {% highlight sh %}
-echo "usage: mytool [options]" >&2; exit 1   # error
-echo "usage: mytool [options]";     exit 0   # not an error
+echo "usage: mytool [options]";     exit 0   # bad: no indication of an error
+echo "usage: mytool [options]" >&2; exit 1   # bad: usage statement cannot be easily paged
+echo "usage: mytool [options]";     exit 1   # worse: pathological failure with no error message
 {% endhighlight %}
 
 Mixing stdout with a non-zero exit is not just sloppy; it
@@ -118,6 +119,13 @@ elsewhere.  But the usage dump went to stdout, so `count`
 now contains a wrong value.  The tool's confusion about
 its own error semantics has introduced a silent bug in the
 caller's code.
+
+The best way to avoid this inherent inconsistency is to not emit a
+usage statement in response to an error.  If there is a usage error,
+identify the specific error.  Do not emit a tutorial, or speculate
+about a reason for the mistake (eg, "did you forget to ...?"), or
+suggest alternatives ("did you mean ...?").  Just identify the error
+succinctly and accurately.
 
 ## Stack traces are not error messages
 
