@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Error messages should be succinct"
+title:  "Usage dumps are not error messages"
 date:   2020-02-20 20:56:59 -0800
 github_comments_issueid: "1"
 excerpt_separator: \{% endhighlight %\}
@@ -78,6 +78,49 @@ settings than the simple interactive use case.
 [^3]: Do not ever do this.  Git is not a deployment tool, and using
     git from ansible is an absolute travesty.
 
+## The stdout/stderr contradiction
+
+A particularly pernicious variant of this problem is the
+common shell script pattern:
+
+{% highlight sh %}
+echo "usage: mytool [options]"
+exit 1
+{% endhighlight %}
+
+There is an internal contradiction here.  The exit code says
+"this is an error", but the message was written to stdout,
+which says "this is normal output."  One of those two
+statements is wrong.
+
+If the tool considers this an error condition (and `exit 1`
+says it does), then the usage message is an error message
+and belongs on stderr.  If the message is normal output
+that belongs on stdout, then no error occurred and the exit
+code should be 0.  These are the only two internally consistent
+positions:
+
+{% highlight sh %}
+echo "usage: mytool [options]" >&2; exit 1   # error
+echo "usage: mytool [options]";     exit 0   # not an error
+{% endhighlight %}
+
+Mixing stdout with a non-zero exit is not just sloppy; it
+actively corrupts pipelines.  Consider a script that counts
+output lines:
+
+{% highlight sh %}
+count=$(mytool --baf 2>/dev/null | wc -l)
+{% endhighlight %}
+
+The caller suppressed stderr because errors are handled
+elsewhere.  But the usage dump went to stdout, so `count`
+now contains a wrong value.  The tool's confusion about
+its own error semantics has introduced a silent bug in the
+caller's code.
+
+## Stack traces are not error messages
+
 This is similar in spirit to the misuse of stack traces.  Software
 should not use a stack trace as a replacement for a well written
 error message.  A stack trace is an indication of a programming
@@ -94,7 +137,18 @@ by kafka-connect[^2]:
     found it yet.
 
 <pre>
-`"trace": "org.apache.kafka.connect.errors.ConnectException: Exiting WorkerSinkTask due to unrecoverable exception.\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.deliverMessages(WorkerSinkTask.java:560)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.poll(WorkerSinkTask.java:321)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.iteration(WorkerSinkTask.java:224)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.execute(WorkerSinkTask.java:192)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: com.google.cloud.bigquery.BigQueryException: Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.translate(HttpBigQueryRpc.java:103)\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.getTable(HttpBigQueryRpc.java:250)\n\tat com.google.cloud.bigquery.BigQueryImpl$14.call(BigQueryImpl.java:558)\n\tat com.google.cloud.bigquery.BigQueryImpl$14.call(BigQueryImpl.java:555)\n\tat com.google.api.gax.retrying.DirectRetryingExecutor.submit(DirectRetryingExecutor.java:105)\n\tat com.google.cloud.RetryHelper.run(RetryHelper.java:76)\n\tat com.google.cloud.RetryHelper.runWithRetries(RetryHelper.java:50)\n\tat com.google.cloud.bigquery.BigQueryImpl.getTable(BigQueryImpl.java:554)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.maybeCreateTable(BigQuerySinkTask.java:169)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.getRecordTable(BigQuerySinkTask.java:144)\n\tat com.wepay.kafka.connect.bigquery.BigQuerySinkTask.put(BigQuerySinkTask.java:207)\n\tat org.apache.kafka.connect.runtime.WorkerSinkTask.deliverMessages(WorkerSinkTask.java:538)\n\t... 10 more\nCaused by: com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden\n{\n  \"code\" : 403,\n  \"errors\" : [ {\n    \"domain\" : \"usageLimits\",\n    \"message\" : \"Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\",\n    \"reason\" : \"rateLimitExceeded\"\n  } ],\n  \"message\" : \"Exceeded rate limits: too many api requests per user per method for this user_method. For more information, see https://cloud.google.com/bigquery/troubleshooting-errors\",\n  \"status\" : \"PERMISSION_DENIED\"\n}\n\tat com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:150)\n\tat com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:113)\n\tat com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:40)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest$1.interceptResponse(AbstractGoogleClientRequest.java:451)\n\tat com.google.api.client.http.HttpRequest.execute(HttpRequest.java:1089)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:549)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:482)\n\tat com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:599)\n\tat com.google.cloud.bigquery.spi.v2.HttpBigQueryRpc.getTable(HttpBigQueryRpc.java:248)\n\t... 20 more\n",`
+ConnectException: Exiting WorkerSinkTask due to unrecoverable exception.
+  at WorkerSinkTask.deliverMessages(WorkerSinkTask.java:560)
+  at WorkerSinkTask.poll(WorkerSinkTask.java:321)
+  ...
+Caused by: BigQueryException: Exceeded rate limits: too many api
+  requests per user per method for this user_method.
+  at HttpBigQueryRpc.translate(HttpBigQueryRpc.java:103)
+  ...
+Caused by: GoogleJsonResponseException: 403 Forbidden
+  { "status" : "PERMISSION_DENIED" }
+  at GoogleJsonResponseException.from(GoogleJsonResponseException.java:150)
+  ... 20 more
 </pre>
 
 How long did it take you to see that the core of the problem is
@@ -109,11 +163,12 @@ of the string "PERMISSION_DENIED" in the above string.  I leave
 it as an exercise to the reader to determine if there is any authentication
 error here.
 
+## Usage dumps in response to errors
 
 Maybe this is just me ranting "get off my lawn", but I believe
 this is a significant problem.  Similar to printing a usage
 statement in response to an error.  Don't do it!  If a user
-wants an error message,
+wants a usage statement,
 they should ask for it with a flag (eg, -h, or --help).
 If you spam 75 lines of usage in response to an error,
 it is not useful even in the simple use case and a major
@@ -153,7 +208,7 @@ What does `--porcelain` and `--untracked-files` have to do with
 this error?  Absolutely nothing, so why am I being told about them?
 Clearly some error occurred, but it would be much easier if the
 error message stating that `--colunm` is an unrecognized option were
-still visible.  Suspecting that there's probaly some useful information
+still visible.  Suspecting that there's probably some useful information
 at the top of the output, the user might reasonably use their shell history
 to rerun the command with a slight modification:
 
@@ -171,7 +226,7 @@ $ git status --column 2>&1 | head
 
 and sees no error!  Then another re-run from the shell history, again
 having to edit the command to redirect the error stream, and the error message
-if finally visible.
+is finally visible.
 
 In this case, the tool writer made a half-baked attempt to fix this
 problem, and when the tool is invoked in the simplest case the error
@@ -184,9 +239,22 @@ principle of least surprise.  The tool has made it difficult to see
 what the error message is, rather than bringing it to the attention
 of the user.
 
+## What good tools do
+
+Contrast the above with grep:
+
+{% highlight sh %}
+$ grep --baf .
+grep: unrecognized option '--baf'
+{% endhighlight %}
+
+One line, on stderr, exit code 2.  The user knows exactly what
+went wrong.  No usage dump, no helpful suggestions, no tutorial.
+The user can type `grep --help` if they need a refresher.
+
 In short, assume your users are semi-competent beings who can type
 '-h' if they need to and are able to understand the implications
 of a simple error message like "permission denied".  You are not
-writing a tutorial; you are provided a description of the error
+writing a tutorial; you are providing a description of the error
 that occurred.  Make it succinct.  Don't write out a bunch of useless
 verbiage that will almost always be ignored.
