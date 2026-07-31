@@ -252,9 +252,9 @@ One line, on stderr, exit code 2.  The user knows exactly what
 went wrong.  No usage dump, no helpful suggestions, no tutorial.
 The user can type `grep --help` if they need a refresher.
 
-In short, assume your users are semi-competent beings who can type
+In short, a usage statement is not an error message.  Assume
+your users are semi-competent beings who can type
 '-h' if they need to and are able to understand the implications
 of a simple error message like "permission denied".  You are not
 writing a tutorial; you are providing a description of the error
-that occurred.  Make it succinct.  Don't write out a bunch of useless
-verbiage that will almost always be ignored.
+that occurred.  Make it succinct.
