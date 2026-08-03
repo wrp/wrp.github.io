@@ -6,12 +6,14 @@ github_comments_issueid: "5"
 categories: blog
 ---
 
-[Conventional commits](https://www.conventionalcommits.org) are a popular approach
-for maintaining history, but I believe that approach is sub-optimal.
-There is a more flexible way to record the same information.  In particular,
-conventional commits recognizes the utility of using git trailers to convey
-information, and I argue here that *all* of the information that conventional
-commits puts in subjects should instead be recorded in trailers, since it
+[Conventional commits](https://www.conventionalcommits.org) are a
+popular approach for maintaining history, but I believe that approach
+is sub-optimal.  Rather than placing metadata about the commit in
+the subject line, the information should be added to git trailers
+in the body of the commit message.  The protocol recognizes the
+utility of using git trailers for metadata, and I argue here that
+*all* of the information that conventional commits puts in subjects
+should instead be recorded in trailers.  It is more robust and
 allows the reader greater flexibility in displaying the information.
 
 Consider:
