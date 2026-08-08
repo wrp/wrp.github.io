@@ -28,9 +28,9 @@ $ git config alias.l1 '!bash -c '\''trailers="${t:+[%<(${w:-11})'$(:
 $ make_commit() { f=$1; echo text > $f;
 	git add $f;
 	git commit -m "Add $f" -s \
-		--trailer subproject=$2 \
-		--trailer ticket=$3 \
-		--trailer type=$4;
+		--trailer Subproject=$2 \
+		--trailer Ticket=$3 \
+		--trailer Type=$4;
 	} > /dev/null
 $ make_commit file1 mem MEM-4 chore
 $ make_commit file2 storage STORE-1234 docs
@@ -39,11 +39,11 @@ $ git l1
 bob Add file3
 bob Add file2
 bob Add file1
-$ t=ticket git l1
+$ t=Ticket git l1
 bob [COMP-134   ] Add file3
 bob [STORE-1234 ] Add file2
 bob [MEM-4      ] Add file1
-$ w=3 t=type git l1
+$ w=3 t=Type git l1
 bob [feat] Add file3
 bob [docs] Add file2
 bob [chore] Add file1
