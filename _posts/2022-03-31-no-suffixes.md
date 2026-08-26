@@ -7,10 +7,10 @@ categories: blog
 ---
 
 Lately have been thinking a little bit about the annoyance of seeing filename
-extensions on executables. (eg, foo.sh vs the more sensible foo)   Discovered
+extensions on executables. (eg, "foo.sh" vs the more sensible "foo")   Discovered
 this lovely article: https://www.talisman.org/~erlkonig/documents/commandname-extensions-considered-harmful/
 
-I'll duplicate the bullet points here.  Doing this is bad because of:
+I'll duplicate the bullet points here.  Using filename suffixes is bad because:
 
 * unnecessarily expose implementation detail (breaking encapsulation).
 * uselessly and incompletely mimic detail from the #! line.
